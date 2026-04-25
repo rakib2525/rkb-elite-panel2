@@ -17,46 +17,37 @@
             --warning-orange: #f59e0b;
         }
         body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg-main); color: var(--text-light); display: flex; min-height: 100vh; }
-        
         .sidebar { width: 280px; background: var(--sidebar-bg); height: 100vh; position: fixed; padding: 20px; border-right: 1px solid var(--border); box-sizing: border-box; z-index: 100; }
         .sidebar h2 { color: var(--primary-green); text-align: center; font-size: 24px; margin-bottom: 40px; }
         .nav-link { padding: 14px 18px; color: #94a3b8; text-decoration: none; display: flex; align-items: center; border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: 0.3s; }
         .nav-link i { margin-right: 12px; width: 20px; }
         .nav-link:hover, .nav-link.active { background: var(--primary-green); color: white; }
-
         .main { margin-left: 280px; padding: 40px; width: calc(100% - 280px); box-sizing: border-box; }
         .section { display: none; animation: fadeIn 0.4s ease; }
         .section.active { display: block; }
-
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: var(--card-bg); padding: 25px; border-radius: 15px; border: 1px solid var(--border); text-align: center; }
         .stat-card h3 { color: #94a3b8; font-size: 14px; margin-bottom: 10px; margin-top: 0; }
         .stat-card h2 { font-size: 28px; color: var(--primary-green); margin: 0; }
-
         .box { background: var(--card-bg); padding: 30px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 30px; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background: #334155; color: #94a3b8; padding: 15px; text-align: left; font-weight: 500; }
         td { padding: 15px; border-bottom: 1px solid var(--border); }
         input, select { background: #0f172a; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 8px; width: 100%; margin-bottom: 15px; box-sizing: border-box; font-family: inherit; }
-        
         .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.3s; font-family: inherit; }
         .btn-green { background: var(--primary-green); color: white; }
         .btn-red { background: #ef4444; color: white; }
-        .btn-warning { background: var(--warning-orange); color: white; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-
     <div class="sidebar">
         <h2>RKB ELITE</h2>
         <div class="nav-link active" onclick="showTab('overview')"><i class="fas fa-th-large"></i> Overview</div>
-        <div class="nav-link" onclick="showTab('members')"><i class="fas fa-users"></i> Member Management</div>
+        <div class="nav-link" onclick="showTab('members')"><i class="fas fa-users"></i> Members</div>
         <div class="nav-link" onclick="showTab('assign-offer')"><i class="fas fa-user-tag"></i> Assign Offer</div>
-        <div class="nav-link" onclick="showTab('offers')"><i class="fas fa-fire"></i> Offers & RevShare</div>
-        <div class="nav-link" onclick="showTab('domains')"><i class="fas fa-globe"></i> Domain Manage</div>
-        <div class="nav-link" onclick="showTab('leads')"><i class="fas fa-chart-line"></i> Lead Approval</div>
+        <div class="nav-link" onclick="showTab('offers')"><i class="fas fa-fire"></i> Offers</div>
+        <div class="nav-link" onclick="showTab('leads')"><i class="fas fa-chart-line"></i> Leads</div>
         <div class="nav-link" onclick="logout()" style="color: #ef4444; margin-top: 50px;"><i class="fas fa-sign-out-alt"></i> Logout</div>
     </div>
 
@@ -74,14 +65,14 @@
         <div id="members" class="section">
             <h1>Member Management</h1>
             <div class="box">
-                <h3 style="color: var(--warning-orange); margin-top: 0;"><i class="fas fa-user-clock"></i> Pending Approval</h3>
+                <h3 style="color: var(--warning-orange);">Pending Requests</h3>
                 <table>
                     <thead><tr><th>Name</th><th>Email</th><th>Action</th></tr></thead>
                     <tbody id="pending-member-table"></tbody>
                 </table>
             </div>
             <div class="box">
-                <h3 style="color: var(--primary-green); margin-top: 0;"><i class="fas fa-user-check"></i> Approved Members</h3>
+                <h3 style="color: var(--primary-green);">Approved Members</h3>
                 <table>
                     <thead><tr><th>Name</th><th>Email</th><th>Balance</th><th>Action</th></tr></thead>
                     <tbody id="member-table"></tbody>
@@ -90,17 +81,29 @@
         </div>
 
         <div id="assign-offer" class="section">
-            <h1>Assign Offer to Member</h1>
-            <div class="box" style="max-width: 600px;">
-                <label style="display: block; margin-bottom: 10px; color: #94a3b8;">1. Select Member</label>
-                <select id="userSelect"><option value="">Loading members...</option></select>
-                <label style="display: block; margin-bottom: 10px; color: #94a3b8;">2. Select Saved Offer</label>
-                <select id="offerSelect"><option value="">Loading offers...</option></select>
-                <button onclick="assignOfferToUser()" class="btn btn-green" style="width: 100%; margin-top: 10px; height: 50px;">Assign Offer Now</button>
+            <h1>Assign Offer</h1>
+            <div class="box" style="max-width: 500px;">
+                <select id="userSelect"><option value="">Select Member</option></select>
+                <select id="offerSelect"><option value="">Select Offer</option></select>
+                <button onclick="assignOfferToUser()" class="btn btn-green" style="width: 100%;">Assign Now</button>
             </div>
         </div>
 
+        <div id="offers" class="section">
+            <h1>Offer Management</h1>
+            <div class="box">
+                <input type="text" id="oName" placeholder="Offer Name">
+                <input type="text" id="oUrl" placeholder="Link">
+                <input type="number" id="oPayout" placeholder="Payout">
+                <button onclick="saveOffer()" class="btn btn-green">Save Offer</button>
+            </div>
         </div>
+
+        <div id="leads" class="section">
+            <h1>Lead Approval</h1>
+            <div class="box"><table id="lead-table"></table></div>
+        </div>
+    </div>
 
     <script>
         const token = localStorage.getItem('token');
@@ -109,9 +112,9 @@
         function showTab(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            const activeLink = document.querySelector(`.nav-link[onclick="showTab('${id}')"]`);
-            if(activeLink) activeLink.classList.add('active');
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active');
+            event.currentTarget.classList.add('active');
             
             if(id === 'overview') loadStats();
             if(id === 'members') loadMembers();
@@ -133,71 +136,35 @@
             try {
                 const res = await fetch('/api/admin/stats', { headers: {'x-auth-token': token}});
                 const data = await res.json();
-                const approvedTable = document.getElementById('member-table');
-                const pendingTable = document.getElementById('pending-member-table');
-                
-                let users = data.users || [];
-                
-                // Status onujayi filter kora
-                const approved = users.filter(u => u.status === 'approved');
-                const pending = users.filter(u => u.status === 'pending');
-
-                approvedTable.innerHTML = approved.length > 0 ? approved.map(u => `
-                    <tr>
-                        <td>${u.name}</td>
-                        <td>${u.email}</td>
-                        <td style="color:var(--primary-green)">$${(u.balance || 0).toFixed(2)}</td>
-                        <td><button class="btn btn-red" onclick="deleteUser('${u._id}')">Delete</button></td>
-                    </tr>
-                `).join('') : '<tr><td colspan="4" style="text-align:center;">No approved members found.</td></tr>';
-
-                pendingTable.innerHTML = pending.length > 0 ? pending.map(u => `
-                    <tr>
-                        <td>${u.name}</td>
-                        <td>${u.email}</td>
-                        <td>
-                            <button class="btn btn-green" onclick="approveUser('${u._id}')">Approve</button>
-                            <button class="btn btn-red" onclick="deleteUser('${u._id}')">Reject</button>
-                        </td>
-                    </tr>
-                `).join('') : '<tr><td colspan="3" style="text-align:center;">No pending requests.</td></tr>';
+                const users = data.users || [];
+                document.getElementById('pending-member-table').innerHTML = users.filter(u => u.status === 'pending').map(u => `
+                    <tr><td>${u.name}</td><td>${u.email}</td><td><button class="btn btn-green" onclick="approveUser('${u._id}')">Approve</button></td></tr>
+                `).join('') || '<tr><td colspan="3">No pending requests.</td></tr>';
+                document.getElementById('member-table').innerHTML = users.filter(u => u.status === 'approved').map(u => `
+                    <tr><td>${u.name}</td><td>${u.email}</td><td>$${u.balance.toFixed(2)}</td><td><button class="btn btn-red" onclick="deleteUser('${u._id}')">Delete</button></td></tr>
+                `).join('') || '<tr><td colspan="4">No members.</td></tr>';
             } catch (err) { console.error(err); }
         }
 
+        async function loadUserDropdown() {
+            const res = await fetch('/api/admin/stats', { headers: {'x-auth-token': token}});
+            const data = await res.json();
+            const users = (data.users || []).filter(u => u.status === 'approved');
+            document.getElementById('userSelect').innerHTML = users.map(u => `<option value="${u._id}">${u.name}</option>`).join('');
+        }
+
+        async function loadOfferDropdown() {
+            const res = await fetch('/api/offers', { headers: {'x-auth-token': token}});
+            const data = await res.json();
+            document.getElementById('offerSelect').innerHTML = data.map(o => `<option value="${o._id}">${o.offerName}</option>`).join('');
+        }
+
         async function approveUser(id) {
-            try {
-                const res = await fetch(`/api/admin/user/approve/${id}`, {
-                    method: 'PUT',
-                    headers: { 'x-auth-token': token }
-                });
-                if(res.ok) {
-                    alert("✅ User Approved!");
-                    loadMembers();
-                    loadStats();
-                }
-            } catch (err) { alert("Error!"); }
+            await fetch(`/api/admin/user/approve/${id}`, { method: 'PUT', headers: {'x-auth-token': token}});
+            loadMembers();
         }
 
-        async function deleteUser(id) {
-            if(confirm("Are you sure?")) {
-                try {
-                    const res = await fetch(`/api/admin/user/${id}`, { 
-                        method: 'DELETE', 
-                        headers: {'x-auth-token': token}
-                    });
-                    if(res.ok) {
-                        loadMembers();
-                        loadStats();
-                    }
-                } catch (err) { console.error(err); }
-            }
-        }
-
-        function logout() { 
-            localStorage.removeItem('token'); 
-            window.location.href='index.html'; 
-        }
-
+        function logout() { localStorage.removeItem('token'); window.location.href='index.html'; }
         loadStats();
     </script>
 </body>
