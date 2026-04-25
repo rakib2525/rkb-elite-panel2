@@ -1,0 +1,7 @@
+{
+  "activeDomains": [
+    { "id": 1, "url": "rkb-elite-main.com", "status": "primary" },
+    { "id": 2, "url": "secure-offer.com", "status": "mirror" },
+    { "id": 3, "url": "fast-track.net", "status": "mirror" }
+  ]
+}

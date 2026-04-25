@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKB ELITE - Premium Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --bg-dark: #0b0f19;
+            --card-bg: #161e2d;
+            --gold: #d4af37;
+            --gold-hover: #f1c40f;
+            --border: rgba(212, 175, 55, 0.2);
+        }
+
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-dark); color: #e2e8f0; display: flex; }
+
+        /* Sidebar Modern UI */
+        .sidebar { 
+            width: var(--sidebar-width); background: #111827; height: 100vh; position: fixed; 
+            padding: 30px 20px; border-right: 1px solid var(--border); display: flex; flex-direction: column; 
+        }
+        .sidebar h2 { color: var(--gold); font-size: 26px; text-align: center; margin-bottom: 40px; letter-spacing: 2px; }
+        .sidebar-link { 
+            padding: 16px 20px; color: #94a3b8; cursor: pointer; border-radius: 12px; 
+            margin-bottom: 10px; transition: 0.3s; display: flex; align-items: center; gap: 15px; font-weight: 600;
+        }
+        .sidebar-link i { font-size: 18px; }
+        .sidebar-link:hover, .sidebar-link.active { background: rgba(212, 175, 55, 0.1); color: var(--gold); box-shadow: inset 4px 0 0 var(--gold); }
+
+        /* Main Content */
+        .main-content { margin-left: var(--sidebar-width); padding: 50px; width: calc(100% - var(--sidebar-width)); }
+        header h1 { font-size: 32px; margin-bottom: 10px; }
+
+        /* Big & Bold Stats */
+        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .stat-card { 
+            padding: 35px; border-radius: 20px; background: var(--card-bg); 
+            border: 1px solid var(--border); transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .stat-card h3 { font-size: 16px; color: #94a3b8; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        .stat-card h2 { font-size: 42px; margin: 0; color: #fff; }
+        .stat-card i { position: absolute; right: 20px; bottom: 20px; font-size: 50px; opacity: 0.1; color: var(--gold); }
+
+        /* Large Section Boxes */
+        .section-box { 
+            background: var(--card-bg); padding: 40px; border-radius: 24px; 
+            border: 1px solid var(--border); margin-top: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .section-box h3 { font-size: 24px; margin-bottom: 25px; color: var(--gold); display: flex; align-items: center; gap: 10px; }
+
+        /* Form Inputs */
+        .input-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .field { display: flex; flex-direction: column; gap: 8px; }
+        .field label { font-size: 14px; font-weight: 600; color: #94a3b8; }
+        .premium-input { 
+            background: #0b0f19; border: 1px solid #334155; color: white; padding: 15px; 
+            border-radius: 12px; font-size: 16px; transition: 0.3s;
+        }
+        .premium-input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+
+        /* Buttons */
+        .btn-gold { 
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%); color: #000; 
+            font-weight: 700; border: none; padding: 18px; border-radius: 12px; 
+            cursor: pointer; font-size: 18px; transition: 0.3s; width: 100%;
+        }
+        .btn-gold:hover { transform: scale(1.01); filter: brightness(1.1); }
+
+        /* Tables */
+        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; margin-top: 20px; }
+        th { padding: 15px 20px; text-align: left; color: #94a3b8; font-weight: 600; text-transform: uppercase; font-size: 13px; }
+        td { padding: 20px; background: rgba(255,255,255,0.03); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        td:first-child { border-left: 1px solid var(--border); border-radius: 15px 0 0 15px; }
+        td:last-child { border-right: 1px solid var(--border); border-radius: 0 15px 15px 0; }
+
+        /* Animation */
+        .content-section { display: none; animation: slideUp 0.4s ease-out; }
+        .content-section.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .copy-btn { background: #334155; border: none; color: white; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>RKB ELITE</h2>
+        <div class="sidebar-link active" onclick="showSection('overview', this)"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="sidebar-link" onclick="showSection('offers', this)"><i class="fas fa-fire"></i> Offers & Links</div>
+        <div class="sidebar-link" onclick="showSection('leads', this)"><i class="fas fa-sync"></i> Reports</div>
+        <div class="sidebar-link" onclick="showSection('withdraw', this)"><i class="fas fa-wallet"></i> Payouts</div>
+        <div class="sidebar-link" onclick="logout()" style="margin-top: auto; color: #ef4444;"><i class="fas fa-power-off"></i> Logout</div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1 id="user-name-display">Welcome, Chief!</h1>
+            <p style="color: #94a3b8; font-size: 18px;">Here is your performance snapshot for today.</p>
+        </header>
+
+        <div id="overview" class="content-section active">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Total Balance</h3>
+                    <h2 id="current-balance">$0.00</h2>
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-card">
+                    <h3>Successful Leads</h3>
+                    <h2 id="approved-count">0</h2>
+                    <i class="fas fa-bullseye"></i>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <h3><i class="fas fa-rocket"></i> Premium Smartlink Generator</h3>
+                <div class="input-group">
+                    <div class="field">
+                        <label>1. Select Mirror</label>
+                        <select id="domainSelect" class="premium-input"></select>
+                    </div>
+                    <div class="field">
+                        <label>2. Sub ID / Source (Optional)</label>
+                        <input type="text" id="subId" class="premium-input" placeholder="e.g. facebook_ads">
+                    </div>
+                    <div class="field">
+                        <label>Your ID</label>
+                        <input type="text" id="displayUserId" class="premium-input" readonly style="opacity: 0.5;">
+                    </div>
+                </div>
+                <button onclick="generateSmartlink()" class="btn-gold">Generate Secure Tracking Link</button>
+
+                <div id="linkOutputContainer" style="display: none; margin-top: 30px; padding: 25px; background: #000; border: 1px solid var(--gold); border-radius: 15px;">
+                    <p style="font-size: 12px; color: var(--gold); margin-bottom: 10px;">PROMOTIONAL URL:</p>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <code id="finalSmartlink" style="flex: 1; font-size: 18px; color: #fff; word-break: break-all;"></code>
+                        <button class="btn-gold" onclick="copyDynamicLink()" style="width: auto; padding: 10px 25px;">COPY</button>
+                    </div>
+                    <p id="dynamic-copy-msg" style="color: #10b981; font-size: 14px; margin-top: 10px; display: none;">✅ Link copied successfully!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="offers" class="content-section">
+            <div class="section-box">
+                <h3><i class="fas fa-list"></i> Exclusive Offers</h3>
+                <table>
+                    <thead>
+                        <tr><th>Offer Name</th><th>Payout</th><th>Geo</th><th>Direct Tracking Link</th></tr>
+                    </thead>
+                    <tbody id="my-offers-list"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="leads" class="content-section">
+            <div class="section-box">
+                <h3><i class="fas fa-history"></i> Lead Conversion Log</h3>
+                <table>
+                    <thead>
+                        <tr><th>Date</th><th>Offer</th><th>Payout</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="leads-list"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="withdraw" class="content-section">
+            <div class="section-box">
+                <h3><i class="fas fa-credit-card"></i> Payment Withdrawal</h3>
+                <div class="input-group">
+                    <div class="field">
+                        <label>Withdraw Amount ($)</label>
+                        <input type="number" id="withdrawAmount" class="premium-input" placeholder="Min $10.00">
+                    </div>
+                    <div class="field">
+                        <label>Payment Method</label>
+                        <select id="paymentMethod" class="premium-input">
+                            <option value="bkash">bKash Personal</option>
+                            <option value="nagad">Nagad Personal</option>
+                            <option value="binance">Binance (USDT)</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Account Info</label>
+                        <input type="text" id="paymentDetails" class="premium-input" placeholder="Number or Address">
+                    </div>
+                </div>
+                <button onclick="requestWithdraw()" class="btn-gold">Confirm Payout Request</button>
+                <p id="withdraw-msg" style="margin-top: 20px; text-align: center; font-weight: 600;"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'index.html';
+        let currentUserId = "";
+
+        function showSection(id, el) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
+        }
+
+        async function loadUserData() {
+            try {
+                const res = await fetch('/api/auth/user', { headers: { 'x-auth-token': token } });
+                const user = await res.json();
+                if (res.ok) {
+                    currentUserId = user._id;
+                    document.getElementById('user-name-display').innerText = `Welcome Back, ${user.name}!`;
+                    document.getElementById('displayUserId').value = user._id;
+                    document.getElementById('current-balance').innerText = `$${(user.balance || 0).toFixed(2)}`;
+                    loadDomains(); loadLeads(); loadMyOffers();
+                } else { logout(); }
+            } catch (err) { console.error(err); }
+        }
+
+        async function loadDomains() {
+            const select = document.getElementById('domainSelect');
+            try {
+                const res = await fetch('/api/dashboard', { headers: { 'x-auth-token': token } });
+                const domains = await res.json();
+                select.innerHTML = domains.map(d => `<option value="${d.url}">${d.url}</option>`).join('');
+            } catch (err) { select.innerHTML = `<option value="${window.location.host}">${window.location.host}</option>`; }
+        }
+
+        // --- স্মার্টলিঙ্ক উইথ সাব আইডি ---
+        function generateSmartlink() {
+            const domain = document.getElementById('domainSelect').value;
+            const subId = document.getElementById('subId').value;
+            // Parameter যোগ করা হলো
+            let link = `https://${domain}/api/sl/${currentUserId}`;
+            if(subId) link += `?subid=${encodeURIComponent(subId)}`;
+            
+            document.getElementById('finalSmartlink').innerText = link;
+            document.getElementById('linkOutputContainer').style.display = 'block';
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert("Copied to clipboard!");
+        }
+
+        function copyDynamicLink() {
+            const text = document.getElementById('finalSmartlink').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const msg = document.getElementById('dynamic-copy-msg');
+                msg.style.display = 'block';
+                setTimeout(() => msg.style.display = 'none', 2000);
+            });
+        }
+
+        async function loadMyOffers() {
+            const res = await fetch('/api/offers/my-offers', { headers: { 'x-auth-token': token } });
+            const offers = await res.json();
+            const domain = document.getElementById('domainSelect').value || window.location.host;
+            
+            if(res.ok) {
+                document.getElementById('my-offers-list').innerHTML = offers.map(o => {
+                    // ডিরেক্ট অফার লিঙ্ক তৈরি (Sub ID সহ)
+                    const directLink = `https://${domain}/api/sl/${currentUserId}?offerid=${o._id}`;
+                    return `
+                        <tr>
+                            <td style="font-weight:bold;">${o.offerName}</td>
+                            <td style="color:#10b981;">$${o.payout}</td>
+                            <td>🌍 ${o.targetCountry}</td>
+                            <td>
+                                <input type="text" readonly value="${directLink}" id="off-${o._id}" style="width:120px; background:transparent; border:none; color:#718096; font-size:10px;">
+                                <button class="copy-btn" onclick="copyToClipboard('${directLink}')">Copy Link</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        async function loadLeads() {
+            const res = await fetch('/api/leads/me', { headers: { 'x-auth-token': token } });
+            const leads = await res.json();
+            if(res.ok) {
+                document.getElementById('approved-count').innerText = leads.filter(l => l.status === 'approved').length;
+                document.getElementById('leads-list').innerHTML = leads.map(l => `
+                    <tr>
+                        <td>${new Date(l.date).toLocaleDateString()}</td>
+                        <td>${l.offerName || 'Smartlink'}</td>
+                        <td>$${l.payout}</td>
+                        <td style="color: ${l.status === 'approved' ? '#10b981' : '#f59e0b'}">${l.status.toUpperCase()}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        async function requestWithdraw() {
+            const amount = document.getElementById('withdrawAmount').value;
+            const method = document.getElementById('paymentMethod').value;
+            const details = document.getElementById('paymentDetails').value;
+            const res = await fetch('/api/withdraw/request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+                body: JSON.stringify({ amount: parseFloat(amount), method, details })
+            });
+            const data = await res.json();
+            const msg = document.getElementById('withdraw-msg');
+            msg.innerText = data.msg;
+            msg.style.color = res.ok ? "#10b981" : "#ef4444";
+        }
+
+        function logout() { localStorage.removeItem('token'); window.location.href = 'index.html'; }
+        loadUserData();
+    </script>
+</body>
+</html>

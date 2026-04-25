@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Admin Access - RKB ELITE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --card-bg: #111827;
+            --admin-red: #ef4444;
+            --border-color: #374151;
+            --text-gray: #9ca3af;
+        }
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .admin-login-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid var(--admin-red);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);
+            text-align: center;
+        }
+        .admin-login-box i.master-icon {
+            font-size: 50px;
+            color: var(--admin-red);
+            margin-bottom: 20px;
+        }
+        .admin-login-box h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        .admin-login-box p {
+            color: var(--text-gray);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-gray);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            background: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+        .input-group input:focus {
+            border-color: var(--admin-red);
+        }
+        .btn-master {
+            width: 100%;
+            padding: 15px;
+            background: var(--admin-red);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-master:hover {
+            background: #dc2626;
+            transform: scale(1.02);
+        }
+        .secure-note {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-login-box">
+        <i class="fas fa-user-shield master-icon"></i>
+        <h2>MASTER LOGIN</h2>
+        <p>RKB ELITE - Administration Authority</p>
+
+        <form id="adminLoginForm">
+            <div class="input-group">
+                <label>Admin Email</label>
+                <input type="email" id="email" placeholder="admin@rkbelite.com" required>
+            </div>
+            <div class="input-group">
+                <label>Security Key</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-master">Authorize Access</button>
+        </form>
+
+        <p class="secure-note"><i class="fas fa-lock"></i> Secured End-to-End Encryption Enabled</p>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    // চেক করবে ইউজার আসলেও অ্যাডমিন কি না
+                    if (data.user.role !== 'admin') {
+                        alert("Unauthorized! You are not an administrator.");
+                        return;
+                    }
+
+                    // টোকেন সেভ করে অ্যাডমিন ড্যাশবোর্ডে পাঠাবে
+                    localStorage.setItem('token', data.token);
+                    window.location.href = 'admin.html';
+                } else {
+                    alert(data.message || "Invalid Credentials!");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server Connection Error!");
+            }
+        });
+    </script>
+</body>
+</html>

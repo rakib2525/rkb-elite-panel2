@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Login - RKB ELITE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --card-bg: #1e293b;
+            --primary-green: #10b981;
+            --text-light: #f8fafc;
+            --border: #334155;
+        }
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .login-container {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .login-container h2 {
+            color: var(--primary-green);
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+        .login-container p {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: var(--primary-green);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-green);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-login:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #94a3b8;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+        .signup-link a {
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>RKB ELITE</h2>
+        <p>Member Access Only</p>
+        <form id="loginForm">
+            <div class="input-group">
+                <label><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn-login">Login to Dashboard</button>
+        </form>
+
+        <div class="signup-link">
+            Don't have an account? <a href="register.html">Sign Up Now</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    // যদি ইউজার অ্যাডমিন হয়, তবে মেম্বার পেজ থেকে লগইন করতে দিবে না
+                    if (data.user.role === 'admin') {
+                        alert("Access Denied! Admins must use the secure login page.");
+                        return; 
+                    }
+
+                    // মেম্বার হলে টোকেন সেভ করবে এবং ড্যাশবোর্ডে পাঠাবে
+                    localStorage.setItem('token', data.token);
+                    window.location.href = 'dashboard.html';
+                    
+                } else {
+                    alert(data.message || "Login failed!");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Login Error!");
+            }
+        });
+    </script>
+</body>
+</html>

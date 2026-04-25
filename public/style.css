@@ -1,0 +1,236 @@
+/* --- Modern & Premium RKB ELITE Global Styles --- */
+
+:root {
+    --primary-color: #4facfe;
+    --secondary-color: #00f2fe;
+    --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --danger-gradient: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+    --admin-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --dark-bg: #0f172a; /* আরও ডিপ ডার্ক কালার */
+    --light-bg: #f8fafc;
+    --sidebar-width: 280px; /* সাইডবার একটু চওড়া করা হয়েছে */
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--light-bg);
+    margin: 0;
+    padding: 0;
+    color: #1e293b;
+    overflow-x: hidden;
+}
+
+/* --- Full Page Layout --- */
+.dashboard-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* --- Sidebar Section (Luxury Look) --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--dark-bg);
+    color: white;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.sidebar h2 {
+    font-size: 26px;
+    margin-bottom: 50px;
+    text-align: center;
+    letter-spacing: 2px;
+    background: var(--admin-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+}
+
+.sidebar-link {
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #94a3b8;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+    background: var(--admin-gradient);
+    color: white;
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    transform: translateX(5px);
+}
+
+/* --- Main Content Section --- */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: 50px; 
+    box-sizing: border-box;
+    max-width: calc(100% - var(--sidebar-width));
+}
+
+/* --- Header Section --- */
+header {
+    margin-bottom: 45px;
+}
+
+header h1 {
+    font-size: 32px; 
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+/* --- Stats Cards Grid --- */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.stat-card {
+    padding: 40px; 
+    border-radius: 24px;
+    color: white;
+    box-shadow: var(--shadow-premium);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 15px; }
+.stat-card h2 { font-size: 48px; font-weight: 900; margin: 0; }
+
+.balance-card { background: var(--admin-gradient) !important; }
+
+/* --- Content Section Control (ভুল সমাধান করার জন্য মূল অংশ) --- */
+.content-section {
+    display: none; /* ডিফল্টভাবে সব বন্ধ থাকবে */
+    width: 100%;
+}
+
+.content-section.active {
+    display: block !important; /* শুধুমাত্র active ক্লাস থাকলে দেখা যাবে */
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Section Box (Premium Card Look) --- */
+.section-box {
+    background: white;
+    padding: 45px; 
+    border-radius: 28px;
+    box-shadow: var(--shadow-premium);
+    margin-bottom: 40px;
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    transition: 0.3s;
+}
+
+.section-box:hover {
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.05);
+}
+
+.section-box h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #1e293b;
+    border-left: 5px solid var(--primary-color);
+    padding-left: 15px;
+}
+
+/* --- Tables (Clean & Modern) --- */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+th {
+    padding: 20px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #64748b;
+    text-align: left;
+    letter-spacing: 1px;
+}
+
+td {
+    padding: 22px;
+    background: #ffffff;
+    font-size: 16px;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+tr td:first-child { border-left: 1px solid #f1f5f9; border-radius: 16px 0 0 16px; }
+tr td:last-child { border-right: 1px solid #f1f5f9; border-radius: 0 16px 16px 0; }
+
+tr:hover td { background: #f8fbff; }
+
+/* --- Inputs & Buttons --- */
+input, select {
+    background: #f1f5f9;
+    border: 2px solid transparent;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    background: white;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.1);
+}
+
+.btn-save {
+    background: var(--admin-gradient);
+    color: white;
+    font-weight: 700;
+    padding: 16px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px rgba(102, 126, 234, 0.2);
+}
+
+.btn-get-link {
+    background: var(--success-gradient);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* --- Animation --- */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsiveness --- */
+@media (max-width: 1200px) {
+    .main-content { padding: 30px; }
+    .sidebar { width: 100px; }
+    .sidebar h2, .sidebar-link span { display: none; }
+    .main-content { margin-left: 100px; max-width: calc(100% - 100px); }
+}
