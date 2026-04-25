@@ -1,32 +1,40 @@
 const mongoose = require('mongoose');
 
 const OfferSchema = new mongoose.Schema({
+    // Admin jeno specific member ke offer dite pare ba globally rakhte pare
     assignedTo: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', 
-        required: true
+        required: false // globally thakle false thakbe
     },
     offerName: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     offerLink: {
         type: String,
         required: true
     },
     payout: {
-        type: Number, // এটি তোমার নেটওয়ার্ক থেকে পাওয়া অরিজিনাল পে-আউট
+        type: Number, // Original Payout (Network theke ja paben)
         required: true
     },
-    // --- New Field: Member Revenue Share ---
+    // --- Revenue Share Logic ---
     memberPercent: { 
         type: Number, 
-        default: 60 // যেমন: ৭০ লিখলে মেম্বার ৭০% পাবে, তুমি পাবে ৩০%
+        default: 60 // Member koto % pabe
     },
-    // --- Phase 2: Cap System Fields ---
+    // --- Offer Source Type ---
+    offerType: {
+        type: String,
+        enum: ['manual', 'api'],
+        default: 'manual'
+    },
+    // --- Cap System Fields ---
     dailyCap: {
         type: Number,
-        default: 0 // 0 মানে আনলিমিটেড
+        default: 0 // 0 means Unlimited
     },
     totalCap: {
         type: Number,
@@ -40,15 +48,15 @@ const OfferSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    // --- Phase 3: Smartlink/Geo Logic ---
+    // --- Targeting & Status ---
     targetCountry: {
         type: String, 
-        default: 'ALL', // যেমন: 'US', 'UK', 'BD' অথবা 'ALL'
+        default: 'ALL',
         uppercase: true
     },
     status: {
         type: String,
-        enum: ['active', 'paused', 'capped'],
+        enum: ['active', 'paused', 'capped', 'banned'],
         default: 'active'
     },
     description: {
